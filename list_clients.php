@@ -1,35 +1,25 @@
-<?php include 'includes/header.php'; ?>
+<?php
+// Conexión a la base de datos
+include 'config.php';
 
-<div class="container">
-    <h1>Lista de Clientes</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre Completo</th>
-                <th>Tipo de Documento</th>
-                <th>Número de Documento</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            // Conexión a la base de datos y consulta de clientes
-            include 'includes/config.php';
-            $query = "SELECT * FROM Clientes";
-            $result = mysqli_query($conn, $query);
+// Verificar si la solicitud es una llamada AJAX
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    // Consultar todos los clientes en la base de datos
+    $sql = "SELECT cliente_ID, nombre, apellido, tipo_documento, numero_documento, nombre_completo FROM Clientes";
+    $result = $conn->query($sql);
 
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>";
-                echo "<td>{$row['cliente_ID']}</td>";
-                echo "<td>{$row['nombre']} {$row['apellido']}</td>";
-                echo "<td>{$row['tipo_documento']}</td>";
-                echo "<td>{$row['numero_documento']}</td>";
-                echo "</tr>";
-            }
-            ?>
-        </tbody>
-    </table>
-</div>
+    $clientes = array();
+    if ($result->num_rows > 0) {
+        // Recorrer los resultados y almacenarlos en un array
+        while ($row = $result->fetch_assoc()) {
+            $clientes[] = $row;
+        }
+    }
 
-<?php include 'includes/footer.php'; ?>
+    // Retornar los datos en formato JSON
+    header('Content-Type: application/json');
+    echo json_encode($clientes);
+    exit;
+}
+?>
 
