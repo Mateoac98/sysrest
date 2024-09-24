@@ -32,7 +32,7 @@
         <div class="page" id="page2" style="display: none;">
             <h1>SYSREST</h1>
             <div class="form">
-                <label for="nombre">Nombre:</label>
+                <label for="nombre">Nombre Completo:</label>
                 <input type="text" id="nombre" name="nombre" required>
 
                 <label for="documento">Tipo de Documento:</label>
