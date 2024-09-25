@@ -3,8 +3,8 @@
     <h1>Agregar Cita</h1>
     <form action="process_appointment.php" method="POST">
         <!-- Campo para el ID del Cliente -->
-        <label for="cliente_ID">Cliente ID:</label>
-        <input type="number" id="cliente_ID" name="cliente_ID" required>
+        <label for="cliente_id">Cliente ID:</label>
+        <input type="number" id="cliente_id" name="cliente_id" required>
 
         <!-- Campo para el Tipo de Servicio -->
         <label for="tipo_servicio_ID">Tipo de Servicio:</label>
@@ -55,4 +55,3 @@
     </form>
 </div>
 <?php include 'includes/footer.php'; ?>
-

@@ -1,25 +1,97 @@
+<?php include 'includes/header.php'; ?>
+<div class="container">
+    <h1>Turnos Agendados</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Tipo de Servicio</th>
+                <th>Tipo de Turno</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Estado</th>
+                <th>Personal Asignado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Incluir la conexión a la base de datos desde config.php
+            include 'includes/config.php';
+
+            // Verificar si la conexión a la base de datos está abierta
+            if ($conn->connect_error) {
+                die("Conexión fallida: " . $conn->connect_error);
+            }
+
+            // Consulta para obtener los turnos agendados
+            $query = "SELECT * FROM TurnosAgendados";
+            $result = mysqli_query($conn, $query);
+
+            // Verificar si la consulta fue exitosa
+            if (!$result) {
+                die("Error en la consulta: " . mysqli_error($conn));  // Mostrar el error de la consulta
+            }
+
+            // Recorrer los resultados de la consulta
+            while ($row = mysqli_fetch_assoc($result)) {
+                // Verificar si cliente_id está definido y es válido
+                if (!isset($row['cliente_id']) || empty($row['cliente_id'])) {
+                    echo "<tr><td colspan='7'>Cliente no disponible</td></tr>";
+                    continue;
+                }
+
+                // Obtener el nombre del cliente
+                $clienteQuery = "SELECT nombre_completo FROM Clientes WHERE cliente_ID = {$row['cliente_id']}";
+                $clienteResult = mysqli_query($conn, $clienteQuery);
+                if (!$clienteResult) {
+                    die("Error en la consulta de clientes: " . mysqli_error($conn));
+                }
+                $cliente = mysqli_fetch_assoc($clienteResult)['nombre_completo'] ?? 'Cliente no encontrado';
+
+                // Obtener el nombre del servicio
+                $tipoServicioQuery = "SELECT nombre_servicio FROM TiposServicio WHERE tipo_servicio_ID = {$row['tipo_servicio_id']}";
+                $tipoServicioResult = mysqli_query($conn, $tipoServicioQuery);
+                if (!$tipoServicioResult) {
+                    die("Error en la consulta de servicios: " . mysqli_error($conn));
+                }
+                $tipoServicio = mysqli_fetch_assoc($tipoServicioResult)['nombre_servicio'];
+
+                // Obtener el nombre del turno
+                $tipoTurnoQuery = "SELECT nombre_turno FROM TiposTurno WHERE tipo_turno_ID = {$row['tipo_turno_id']}";
+                $tipoTurnoResult = mysqli_query($conn, $tipoTurnoQuery);
+                if (!$tipoTurnoResult) {
+                    die("Error en la consulta de turnos: " . mysqli_error($conn));
+                }
+                $tipoTurno = mysqli_fetch_assoc($tipoTurnoResult)['nombre_turno'];
+
+                // Obtener el nombre del personal asignado
+                $personalQuery = "SELECT nombre_completo FROM Personal WHERE personal_id = {$row['personal_id']}";
+                $personalResult = mysqli_query($conn, $personalQuery);
+                if (!$personalResult) {
+                    die("Error en la consulta de personal: " . mysqli_error($conn));
+                }
+                $personal = mysqli_fetch_assoc($personalResult)['nombre_completo'];
+
+                // Mostrar los datos en la tabla
+                echo "<tr>";
+                echo "<td>{$cliente}</td>";
+                echo "<td>{$tipoServicio}</td>";
+                echo "<td>{$tipoTurno}</td>";
+                echo "<td>{$row['fecha']}</td>";
+                echo "<td>{$row['hora']}</td>";
+                echo "<td>{$row['estado']}</td>";
+                echo "<td>{$personal}</td>"; // Mostrar el personal asignado
+                echo "</tr>";
+            }
+
+            ?>
+        </tbody>
+    </table>
+</div>
 <?php
-// Conexión a la base de datos
-include 'config.php';
-
-// Verificar si la solicitud es una llamada AJAX
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // Consultar todas las citas agendadas en la base de datos
-    $sql = "SELECT turno_ID, cliente_ID, tipo_servicio_ID, tipo_turno_ID, fecha, hora, estado FROM TurnosAgendados";
-    $result = $conn->query($sql);
-
-    $turnos = array();
-    if ($result->num_rows > 0) {
-        // Recorrer los resultados y almacenarlos en un array
-        while ($row = $result->fetch_assoc()) {
-            $turnos[] = $row;
-        }
-    }
-
-    // Retornar los datos en formato JSON
-    header('Content-Type: application/json');
-    echo json_encode($turnos);
-    exit;
+// Cerrar la conexión al final del archivo
+if (isset($conn) && $conn->ping()) {
+    mysqli_close($conn);
 }
 ?>
-
+<?php include 'includes/footer.php'; ?>
