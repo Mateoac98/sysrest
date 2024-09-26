@@ -1,19 +1,20 @@
 <?php
-// Configuración de la base de datos
-$host = 'localhost';
-$dbname = 'sysrest';
-$username = 'root';
-$password = 'nueva_contraseña';
+// Mostrar errores
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-// Crear la conexión
-$conn = new mysqli($host, $username, $password, $dbname);
+// Conexión a la base de datos
+$servername = "localhost";
+$username = "root"; // Cambia esto si usas otro usuario
+$password = "nueva_contraseña"; // Cambia esto si tienes una contraseña
+$dbname = "sysrest"; // Asegúrate de que este sea el nombre correcto
 
-// Verificar la conexión
+// Crear conexión
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Comprobar conexión
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
-
-// Establecer el conjunto de caracteres para evitar problemas con UTF-8
-$conn->set_charset("utf8");
 ?>
-

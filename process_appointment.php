@@ -14,7 +14,6 @@ if ($conn->connect_error) {
 
 // Obtener datos de la solicitud
 $data = $_POST;
-var_dump($data); // Muestra los datos recibidos
 
 // Verificar si los datos se recibieron correctamente
 if (empty($data)) {
@@ -53,7 +52,17 @@ $sql = "INSERT INTO TurnosAgendados (cliente_id, tipo_servicio_id, tipo_turno_id
         VALUES ('$cliente_id', '$tipoServicio', '$tipoTurno', '$fecha', '$hora', 'Agendado', '$personal_ID')";
 
 if ($conn->query($sql) === TRUE) {
-    echo json_encode(['success' => true, 'message' => 'Turno registrado correctamente.']);
+    $turno_id = $conn->insert_id; // Obtener el ID del turno recién creado
+
+    // Obtener el nombre del cliente
+    $clientQuery = "SELECT nombre_completo FROM Clientes WHERE cliente_id = '$cliente_id'";
+    $clientResult = $conn->query($clientQuery);
+    $clientData = $clientResult->fetch_assoc();
+    $nombre_cliente = $clientData['nombre_completo'];
+
+    // Redirigir a add_appointment.php con los datos del ticket
+    header("Location: add_appointment.php?turno_id=$turno_id&nombre_cliente=" . urlencode($nombre_cliente));
+    exit();
 } else {
     echo json_encode(['success' => false, 'error' => 'Error: ' . $conn->error]);
 }
