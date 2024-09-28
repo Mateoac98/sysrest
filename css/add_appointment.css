@@ -1,37 +1,50 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f4f8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e9ecef; /* Color de fondo */
     margin: 0;
     padding: 20px;
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* Asegura que el body ocupe toda la altura de la ventana */
+    justify-content: center; /* Centrar verticalmente */
 }
 
 .container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Centrar horizontalmente */
     align-items: flex-start;
+    flex-direction: column; /* Apilar verticalmente */
     flex-grow: 1; /* Permite que el contenedor crezca y ocupe el espacio disponible */
+    gap: 20px; /* Espacio entre secciones */
 }
 
 h1 {
-    color: #333;
+    color: #343a40; /* Color oscuro para el encabezado */
+    font-size: 28px; /* Tamaño de fuente más grande */
+    text-align: center; /* Centrar el texto */
+    margin-bottom: 20px; /* Espacio debajo del encabezado */
 }
 
 .form-section {
-    flex: 1;
-    margin-right: 20px; /* Espacio entre el formulario y el ticket */
+    width: 100%; /* Ancho completo en dispositivos pequeños */
+    max-width: 500px; /* Máximo ancho para pantallas grandes */
+    margin: auto; /* Centrar el contenedor */
     background-color: #ffffff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px; /* Mayor padding para más espacio interno */
+    border-radius: 10px; /* Bordes más redondeados */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s; /* Transición al hacer hover */
+}
+
+.form-section:hover {
+    transform: translateY(-5px); /* Elevar ligeramente al hacer hover */
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 6px; /* Espacio entre la etiqueta y el input */
     font-weight: bold;
+    color: #495057; /* Color más suave para las etiquetas */
 }
 
 input[type="number"],
@@ -40,33 +53,51 @@ input[type="time"],
 input[type="text"],
 select {
     width: 100%;
-    padding: 10px;
+    padding: 12px; /* Ajustar padding */
     margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #ced4da; /* Color de borde más suave */
+    border-radius: 5px; /* Bordes redondeados */
     box-sizing: border-box;
+    transition: border-color 0.3s; /* Transición suave */
+}
+
+input:focus,
+select:focus {
+    border-color: #007bff; /* Color de borde al enfocar */
+    outline: none; /* Quitar el outline por defecto */
 }
 
 button {
     background-color: #007bff;
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 12px 20px; /* Aumentar padding */
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px; /* Aumentar tamaño de fuente */
+    transition: background-color 0.3s, transform 0.2s; /* Transición suave */
+    width: 100%; /* Botón ocupa todo el ancho */
 }
 
 button:hover {
     background-color: #0056b3;
+    transform: scale(1.05); /* Aumentar un poco el tamaño al pasar el mouse */
 }
 
 .ticket-section {
-    width: 300px; /* Ancho del cuadro del ticket */
+    width: 100%; /* Ancho completo en dispositivos pequeños */
+    max-width: 300px; /* Máximo ancho para pantallas grandes */
     padding: 15px;
-    border: 1px solid #ccc;
+    border: 1px solid #dee2e6; /* Borde más suave */
     border-radius: 5px;
-    background-color: #f9f9f9;
-    margin-top: 200px; /* Ajusta este valor para mover el ticket hacia abajo */
+    background-color: #f8f9fa; /* Fondo suave para el ticket */
+    margin-top: 20px; /* Espacio encima del ticket */
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); /* Sombra para el ticket */
+    transition: transform 0.3s; /* Transición al hacer hover */
+}
+
+.ticket-section:hover {
+    transform: translateY(-5px); /* Elevar ligeramente al hacer hover */
 }
 
 .ticket {
@@ -75,18 +106,47 @@ button:hover {
 
 .ticket p {
     margin: 5px 0;
+    color: #343a40; /* Color más oscuro para el texto del ticket */
 }
 
 .warning {
-    color: #ff0000; /* Rojo para advertencias */
+    color: #dc3545; /* Rojo para advertencias */
     font-weight: bold;
+    text-align: center; /* Centrar el texto de advertencia */
 }
 
 /* Estilo para el footer */
 footer {
     text-align: center;
-    padding: 10px;
-    background-color: #333;
+    padding: 15px;
+    background-color: #343a40;
     color: white;
     margin-top: auto; /* Empuja el footer al final de la página */
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Apilar en pantallas más pequeñas */
+    }
+
+    .ticket-section {
+        width: 100%; /* El ticket ocupa el ancho completo */
+        margin-top: 15px; /* Menos espacio superior en pantallas pequeñas */
+    }
+}
+
+.turnero-section {
+    width: 100%; /* Ancho completo en dispositivos pequeños */
+    max-width: 300px; /* Máximo ancho para pantallas grandes */
+    padding: 15px;
+    border: 1px solid #dee2e6; /* Borde más suave */
+    border-radius: 5px;
+    background-color: #f8f9fa; /* Fondo suave para el turnero */
+    margin-top: 20px; /* Espacio encima del turnero */
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); /* Sombra para el turnero */
+}
+
+.turno-info {
+    color: #343a40; /* Color más oscuro para el texto */
 }

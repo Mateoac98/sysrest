@@ -1,15 +1,23 @@
 <?php
+
 // Configuración de la base de datos
 $host = 'localhost';
 $dbname = 'sysrest';
-$username = 'root';
-$password = 'nueva_contraseña';
+$usernameDB = 'root'; // Tu usuario de base de datos
+$passwordDB = 'nueva_contraseña'; // Tu contraseña de base de datos
 
-$conn = new mysqli($host, $username, $password, $dbname);
+// Conexión a la base de datos
+$conn = new mysqli($host, $usernameDB, $passwordDB, $dbname);
 
 // Verificar la conexión
 if ($conn->connect_error) {
     die(json_encode(['success' => false, 'error' => 'Conexión fallida: ' . $conn->connect_error]));
+}
+
+// Verificar si el usuario está autenticado
+if (!isset($_SESSION['username'])) {
+    echo json_encode(['success' => false, 'error' => 'No autenticado.']);
+    exit;
 }
 
 // Obtener datos de la solicitud
@@ -34,34 +42,34 @@ if (empty($cliente_id) || empty($tipoServicio) || empty($tipoTurno) || empty($fe
     exit;
 }
 
-// Asignación aleatoria de personal
-$personalQuery = "SELECT personal_id FROM Personal WHERE personal_id NOT IN (
-    SELECT personal_id FROM TurnosAgendados WHERE fecha = '$fecha' GROUP BY personal_id HAVING COUNT(*) >= 20
+// Asignación aleatoria de módulo
+$moduloQuery = "SELECT modulo_id FROM modulos WHERE modulo_id NOT IN (
+    SELECT modulo_id FROM turnosagendados WHERE fecha = '$fecha' GROUP BY modulo_id HAVING COUNT(*) >= 20
 ) ORDER BY RAND() LIMIT 1";
 
-$personalResult = $conn->query($personalQuery);
-if ($personalResult->num_rows == 0) {
-    echo json_encode(['success' => false, 'error' => 'No hay personal disponible para esta fecha.']);
+$moduloResult = $conn->query($moduloQuery);
+if ($moduloResult->num_rows == 0) {
+    echo json_encode(['success' => false, 'error' => 'No hay módulos disponibles para esta fecha.']);
     exit;
 }
-$personalRow = $personalResult->fetch_assoc();
-$personal_ID = $personalRow['personal_id'];
+$moduloRow = $moduloResult->fetch_assoc();
+$modulo_ID = $moduloRow['modulo_id'];
 
 // Insertar el turno en la base de datos
-$sql = "INSERT INTO TurnosAgendados (cliente_id, tipo_servicio_id, tipo_turno_id, fecha, hora, estado, personal_id) 
-        VALUES ('$cliente_id', '$tipoServicio', '$tipoTurno', '$fecha', '$hora', 'Agendado', '$personal_ID')";
+$sql = "INSERT INTO turnosagendados (cliente_id, tipo_servicio_id, tipo_turno_id, fecha, hora, estado, modulo_id) 
+        VALUES ('$cliente_id', '$tipoServicio', '$tipoTurno', '$fecha', '$hora', 'Agendado', '$modulo_ID')";
 
 if ($conn->query($sql) === TRUE) {
     $turno_id = $conn->insert_id; // Obtener el ID del turno recién creado
 
     // Obtener el nombre del cliente
-    $clientQuery = "SELECT nombre_completo FROM Clientes WHERE cliente_id = '$cliente_id'";
+    $clientQuery = "SELECT nombre_completo FROM clientes WHERE cliente_id = '$cliente_id'";
     $clientResult = $conn->query($clientQuery);
     $clientData = $clientResult->fetch_assoc();
     $nombre_cliente = $clientData['nombre_completo'];
 
     // Redirigir a add_appointment.php con los datos del ticket
-    header("Location: add_appointment.php?turno_id=$turno_id&nombre_cliente=" . urlencode($nombre_cliente));
+    header("Location: add_appointment.php?turno_id=$turno_id&nombre_cliente=" . urlencode($nombre_cliente) . "&fecha=" . urlencode($fecha) . "&hora=" . urlencode($hora));
     exit();
 } else {
     echo json_encode(['success' => false, 'error' => 'Error: ' . $conn->error]);

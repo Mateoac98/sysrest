@@ -1,212 +1,78 @@
+html {
+    height: 100%;
+}
+
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: rgb(67, 93, 207);
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh;
 }
 
-.container {
-    max-width: 1000px;
-    padding: 20px;
-    background-color: #f7f7f7;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    margin: 20px;
+.login-box {
+    position: relative;
+    width: 400px;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.7); /* Fondo más oscuro para contraste */
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
 }
 
-.page {
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ccc;
-    margin: 20px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.header {
-    text-align: center;
-}
-
-.header h1 {
-    font-size: 36px;
-    margin: 0;
-}
-
-button#ingresarBtn {
-    font-size: 24px;
-    padding: 15px 30px;
-    background-color: #007BFF;
+.login-box h2 {
+    margin: 0 0 30px;
+    padding: 0;
     color: #fff;
-    border: none;
-    cursor: pointer;
-    margin: 20px 0;
-}
-
-.currentDateTimeContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-}
-
-.currentDateTimeBox {
-    background-color: #f7f7f7;
-    border: 1px solid #bdbaba;
-    padding: 10px;
-    margin: 0 10px;
     text-align: center;
 }
 
-.form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 80%;
-    margin: 0 auto;
+.login-box .user-box {
+    position: relative;
+    margin-bottom: 30px;
 }
 
-.form label {
-    font-size: 20px;
-    margin-top: 10px;
-}
-
-.form input[type="text"],
-.form select {
-    width: 70%;
-    padding: 10px;
-    font-size: 16px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-}
-
-button#tomarTurnoBtn {
-    font-size: 24px;
-    padding: 15px 30px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-#warningMessage {
-    display: none; 
-    color: red; 
-    font-size: 16px; 
-    margin-top: 10px; 
-}
-
-.footer {
-    background-color: #8f8787;
-    color: #000000;
-    text-align: center;
-    padding: 10px;
-    margin-top: 20px; /* Ajustado para asegurar espacio suficiente */
+.login-box .user-box input {
     width: 100%;
-    position: relative; /* Asegura que esté dentro del flujo del documento */
-    font-size: 14px; /* Tamaño de fuente adecuado */
-}
-
-.button-container {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-}
-
-.button-container button {
-    padding: 15px 30px;
-    font-size: 20px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin: 0 10px; 
-}
-
-.button-container button:hover {
-    background-color: #0056b3;
-}
-
-#page3 {
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ccc;
-    margin: 20px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#page3 h1 {
-    font-size: 36px;
-    margin: 0;
-}
-
-.turno-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px 0;
-}
-
-.turno-info {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.numero-turno {
-    font-size: 40px;
-    color: #007BFF; 
-    margin-top: 10px;
-}
-
-.mensaje-advertencia {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.mensaje-advertencia p {
-    font-size: 20px;
-}
-
-#siBtn, #noBtn {
-    font-size: 20px;
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    margin: 0 10px;
-    transition: background-color 0.3s;
-}
-
-#siBtn:hover, #noBtn:hover {
-    background-color: #0056b3;
-}
-
-#currentDatePage3, #currentTimePage3 {
+    padding: 10px 0;
     font-size: 16px;
-    font-weight: bold;
-    color: #000000; 
-    margin-top: 10px;
+    color: #fff; /* Color del texto en los campos */
+    border: none;
+    border-bottom: 1px solid #03e9f4; /* Color del borde inferior */
+    outline: none;
+    background: transparent;
 }
 
-#page3 .footer {
-    margin-top: 30px;
+.login-box .user-box label {
+    position: absolute;
+    top: -20px; /* Fija la etiqueta arriba */
+    left: 0;
+    font-size: 12px; /* Tamaño más pequeño */
+    color: #03e9f4; /* Color de la etiqueta */
+    pointer-events: none;
+    transition: 0.5s;
 }
 
-@media (max-width: 768px) {
-    /* Ajustes para pantallas más pequeñas, si es necesario */
+.login-button {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    color: #03e9f4;
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: 0.5s;
+    margin-top: 40px;
+    letter-spacing: 4px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
 }
 
-@media (max-width: 480px) {
-    /* Ajustes para pantallas aún más pequeñas, si es necesario */
+.login-button:hover {
+    color: #fff;
+    border: 1px solid #03e9f4;
 }

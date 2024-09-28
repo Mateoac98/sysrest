@@ -10,7 +10,7 @@
                 <th>Fecha</th>
                 <th>Hora</th>
                 <th>Estado</th>
-                <th>Personal Asignado</th>
+                <th>Modulo</th>
             </tr>
         </thead>
         <tbody>
@@ -41,7 +41,7 @@
                 }
 
                 // Obtener el nombre del cliente
-                $clienteQuery = "SELECT nombre_completo FROM Clientes WHERE cliente_ID = {$row['cliente_id']}";
+                $clienteQuery = "SELECT nombre_completo FROM Clientes WHERE cliente_id = {$row['cliente_id']}";
                 $clienteResult = mysqli_query($conn, $clienteQuery);
                 if (!$clienteResult) {
                     die("Error en la consulta de clientes: " . mysqli_error($conn));
@@ -65,12 +65,12 @@
                 $tipoTurno = mysqli_fetch_assoc($tipoTurnoResult)['nombre_turno'];
 
                 // Obtener el nombre del personal asignado
-                $personalQuery = "SELECT nombre_completo FROM Personal WHERE personal_id = {$row['personal_id']}";
+                $personalQuery = "SELECT nombre FROM Modulos WHERE modulo_id = {$row['modulo_id']}"; // Cambiar a modulo_id
                 $personalResult = mysqli_query($conn, $personalQuery);
                 if (!$personalResult) {
                     die("Error en la consulta de personal: " . mysqli_error($conn));
                 }
-                $personal = mysqli_fetch_assoc($personalResult)['nombre_completo'];
+                $personal = mysqli_fetch_assoc($personalResult)['nombre'] ?? 'Personal no encontrado'; // Cambiar a nombre
 
                 // Mostrar los datos en la tabla
                 echo "<tr>";

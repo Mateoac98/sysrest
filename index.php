@@ -1,112 +1,80 @@
-<?php include 'includes/header.php'; ?>
+<?php
+session_start();
+
+// Configuración de la base de datos
+$host = 'localhost';
+$dbname = 'sysrest';
+$usernameDB = 'root';
+$passwordDB = 'nueva_contraseña';
+
+$conn = new mysqli($host, $usernameDB, $passwordDB, $dbname);
+
+// Verificar la conexión
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
+$error = '';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    // Verifica que los campos no estén vacíos
+    if (empty($username) || empty($password)) {
+        $error = "Por favor, completa todos los campos.";
+    } else {
+        // Consulta a la base de datos para verificar el usuario
+        $sql = "SELECT * FROM usuarios WHERE nombre_usuario = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            // Verifica la contraseña
+            if (password_verify($password, $user['contraseña'])) {
+                $_SESSION['username'] = $username; // Guarda el nombre de usuario en la sesión
+                header("Location: dashboard.php"); // Redirige a la página de dashboard
+                exit();
+            } else {
+                $error = "Nombre de usuario o contraseña incorrectos.";
+            }
+        } else {
+            $error = "Nombre de usuario o contraseña incorrectos.";
+        }
+    }
+}
+
+$conn->close();
+?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Agendamiento de Turnos - SYSREST</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="page" id="page1">
-            <div class="header">
-                <h1>BIENVENIDO</h1>
+    <div class="login-box">
+        <h2>Login</h2>
+        <form action="index.php" method="POST">
+            <div class="user-box">
+                <input type="text" name="username" required="">
+                <label>Username</label>
             </div>
-            <div class="image-container">
-                <img src="images/logo.png" alt="Imagen de SYSREST">
+            <div class="user-box">
+                <input type="password" name="password" required="">
+                <label>Password</label>
             </div>
-            <button id="ingresarBtn">Ingresar</button>
-            <div class="currentDateTimeContainer">
-                <div class="currentDateTimeBox">
-                    <p>HORA:</p>
-                    <span id="currentTime"></span>
-                </div>
-                <div class="currentDateTimeBox">
-                    <p>FECHA:</p>
-                    <span id="currentDate"></span>
-                </div>
-            </div>
-        </div>
-        <div class="page" id="page2" style="display: none;">
-            <h1>SYSREST</h1>
-            <div class="form">
-                <label for="nombre">Nombre Completo:</label>
-                <input type="text" id="nombre" name="nombre" required>
-
-                <label for="documento">Tipo de Documento:</label>
-                <select id="documento" name="documento" required>
-                    <option value="na"></option>
-                    <option value="cc">Cédula de Ciudadanía</option>
-                    <option value="ti">Tarjeta de Identidad</option>
-                    <option value="ce">Cédula de Extranjería</option>
-                    <option value="pa">Pasaporte</option>
-                </select>
-
-                <label for="numeroDocumento">Número de Documento:</label>
-                <input type="text" id="numeroDocumento" name="numeroDocumento" required>
-
-                <label for="tipoServicio">Tipo de Servicio:</label>
-                <select id="tipoServicio" name="tipoServicio" required>
-                    <option value="na"></option>
-                    <option value="au">AUTORIZACIONES</option>
-                    <option value="va">VACUNACIÓN</option>
-                    <option value="la">LABORATORIO</option>
-                    <option value="tr">TRAMITES</option>
-                </select>
-
-                <label for="tipoTurno">Tipo de Turno:</label>
-                <div class="button-container">
-                    <button id="generalBtn" onclick="showWarning('general')">GENERAL</button>
-                    <button id="preferencialBtn" onclick="showWarning('preferencial')">PREFERENCIAL</button>
-                </div>
-
-                <div id="warningMessage" style="color: red; display: none;">Por favor, complete todos los campos requeridos.</div>
-            </div>
-            <div class="currentDateTimeContainer">
-                <div class="currentDateTimeBox">
-                    <p>HORA:</p>
-                    <span id="currentTimeForm"></span>
-                </div>
-                <div class="currentDateTimeBox">
-                    <p>FECHA:</p>
-                    <span id="currentDateForm"></span>
-                </div>
-            </div>
-        </div>
-        <div class="page" id="page3" style="display: none;">
-            <h1>SYSREST</h1>
-            <div class="turno-container">
-                <div class="turno-info">
-                    <p>Su turno es:</p>
-                    <div class="numero-turno">
-                        <!-- Aquí se mostrará el número de turno -->
-                    </div>
-                </div>
-                <div class="mensaje-advertencia">
-                    <p>¿Desea agendar otro turno?</p>
-                    <button id="siBtn">Sí</button>
-                    <button id="noBtn">No</button>
-                </div>
-            </div>
-            <div class="currentDateTimeContainer">
-                <div class="currentDateTimeBox">
-                    <p>FECHA:</p>
-                    <span id="currentDatePage3"></span>
-                </div>
-                <div class="currentDateTimeBox">
-                    <p>HORA:</p>
-                    <span id="currentTimePage3"></span>
-                </div>
-            </div>
-        </div>
-        <div class="footer">
-            <p>© SYSREST 2024</p>
-        </div>
+            <?php if ($error): ?>
+                <p style="color: red; text-align: center;"><?php echo $error; ?></p>
+            <?php endif; ?>
+            <button type="submit" class="login-button">Iniciar Sesión</button>
+        </form>
     </div>
-    <script src="./js/script.js"></script>
 </body>
 </html>
-
-
