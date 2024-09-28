@@ -7,45 +7,29 @@ function fetchClients() {
         .catch(error => console.error('Error:', error));
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Cargar clientes al inicio
-    fetchClients();
+function editStatus(clienteId, estadoActual) {
+    const estadoSelect = document.createElement('select');
+    estadoSelect.innerHTML = `
+        <option value="Activo" ${estadoActual === "Activo" ? "selected" : ""}>Activo</option>
+        <option value="Inactivo" ${estadoActual === "Inactivo" ? "selected" : ""}>Inactivo</option>
+    `;
 
-    // Abrir el modal al hacer clic en el botón
-    document.getElementById('add-client-btn').onclick = function() {
-        document.getElementById('add-client-modal').style.display = 'block';
-    };
-
-    // Cerrar el modal
-    document.getElementById('close-modal').onclick = function() {
-        document.getElementById('add-client-modal').style.display = 'none';
-    };
-
-    // Agregar nuevo cliente
-    document.getElementById('new-client-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const nombreCompleto = document.getElementById('nombre_completo').value;
-        const numeroDocumento = document.getElementById('numero_documento').value;
-        const tipoDocumento = document.getElementById('tipo_documento').value;
-
-        fetch(`add_client.php?nombre=${encodeURIComponent(nombreCompleto)}&numero_documento=${encodeURIComponent(numeroDocumento)}&tipo_documento=${encodeURIComponent(tipoDocumento)}`, {
+    estadoSelect.addEventListener('change', function() {
+        const nuevoEstado = estadoSelect.value;
+        fetch(`update_status.php?id=${clienteId}&estado=${nuevoEstado}`, {
             method: 'GET'
         })
         .then(response => response.text())
         .then(data => {
             alert(data);
-            fetchClients(); // Recargar la lista de clientes
-            document.getElementById('new-client-form').reset(); // Limpiar el formulario
-            document.getElementById('add-client-modal').style.display = 'none'; // Cerrar el modal
+            // Cambiar el estado visible a texto
+            const cell = document.querySelector(`tr[data-id="${clienteId}"] td:nth-child(3)`);
+            cell.innerHTML = nuevoEstado; // Actualiza el estado
         })
         .catch(error => console.error('Error:', error));
     });
 
-    // Cerrar el modal al hacer clic fuera de él
-    window.onclick = function(event) {
-        if (event.target === document.getElementById('add-client-modal')) {
-            document.getElementById('add-client-modal').style.display = 'none';
-        }
-    };
-});
+    const cell = document.querySelector(`tr[data-id="${clienteId}"] td:nth-child(3)`);
+    cell.innerHTML = ''; // Limpiar el contenido actual
+    cell.appendChild(estadoSelect); // Agregar el select
+}
