@@ -8,20 +8,22 @@ body {
     padding: 20px;
 }
 
+.header h1 {
+    margin-bottom: 20px; /* Espacio debajo del header */
+}
+
 .header-content {
     display: flex; /* Alinear horizontalmente */
     align-items: center; /* Centra verticalmente */
-    gap: 20px; /* Espacio entre los botones */
+    margin-bottom: 50px; /* Espacio debajo del header */
 }
 
-h2 {
+h1 {
     margin: 0; /* Elimina el margen para alinear correctamente */
     padding-right: 20px; /* Espacio entre el título y el botón */
 }
 
-
-
-#addClientBtn {
+#addUserBtn, #homeBtn {
     padding: 10px 20px;
     background-color: #007BFF;
     color: white;
@@ -29,9 +31,10 @@ h2 {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    margin-right: 10px; /* Espacio entre botones */
 }
 
-#addClientBtn:hover {
+#addUserBtn:hover, #homeBtn:hover {
     background-color: #0056b3;
 }
 
@@ -72,8 +75,7 @@ h2 {
     background-color: #dc3545;
 }
 
-/* Modal Styles */
-#add-client-modal {
+#add-user-modal {
     display: none; 
     position: fixed; 
     z-index: 1000; 
@@ -87,24 +89,9 @@ h2 {
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto; 
+    margin: 15% auto; /* Ajusta este valor para mover el modal verticalmente */
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; 
+    width: 80%; /* Puedes cambiar este valor según tus necesidades */
     border-radius: 8px; /* Esquinas redondeadas para el modal */
-}
-
-#homeBtn {
-    padding: 10px 20px;
-    background-color: #007BFF; /* Mismo color de fondo */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-left: 20px; /* Espacio entre los botones */
-}
-
-#homeBtn:hover {
-    background-color: #0056b3; /* Color al pasar el mouse */
 }

@@ -13,7 +13,6 @@ if (!isset($_SESSION['username'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SYSREST</title>
     <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="css/list_clients.css"> <!-- Asegúrate de tener tu CSS -->
     <script src="https://use.fontawesome.com/bf66789927.js"></script>
 </head>
 <body>
@@ -26,10 +25,10 @@ if (!isset($_SESSION['username'])) {
         <nav>
             <ul class="admin-menu">
                 <h4>ADMINISTRACIÓN</h4>
-                <li><a href="#" onclick="loadClients()">Clientes</a></li>
-                <li><a href="#">Usuarios</a></li>
+                <li><a href="list_clients.php">Clientes</a></li>
+                <li><a href="list_users.php">Usuarios</a></li>
                 <li><a href="#">Servicios</a></li>
-                <li><a href="#">Modulos</a></li>
+                <li><a href="#">Módulos</a></li>
                 <h4>GESTIÓN TURNOS</h4>
                 <li><a href="#">Generar Turnos</a></li>
                 <li><a href="#">Atender Turnos</a></li>
@@ -43,7 +42,7 @@ if (!isset($_SESSION['username'])) {
     </div>
 
     <div class="page-content">
-        <h1>Bienvenido</h1>
+        <h1>SYSREST</h1>
         <div class="search-and-user">
             <form>
                 <input type="search" placeholder="Buscar...">
@@ -57,26 +56,12 @@ if (!isset($_SESSION['username'])) {
             </div>
         </div>
 
-        <div id="client-info" style="margin-top: 20px;"></div> <!-- Contenedor para la lista de clientes -->
+        <footer class="page-footer">
+            <div class="footer-content">
+                <span>&copy; 2024 Tu Empresa</span>
+                <a href="#">Política de privacidad</a>
+            </div>
+        </footer>
     </div>
-
-    <footer class="page-footer">
-        <span>&copy; 2024 Tu Empresa</span>
-        <a href="#">Política de privacidad</a>
-    </footer>
-
-    <script src="js/list_clients.js"></script>
-    <script>
-        function loadClients() {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', 'list_clients.php?ajax=true', true);
-            xhr.onload = function() {
-                if (this.status === 200) {
-                    document.getElementById('client-info').innerHTML = this.responseText;
-                }
-            };
-            xhr.send();
-        }
-    </script>
 </body>
 </html>

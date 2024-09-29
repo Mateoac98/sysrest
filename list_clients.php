@@ -26,34 +26,44 @@ if ($result->num_rows > 0) {
     }
 }
 
-if (isset($_GET['ajax'])) {
-    echo '<h1>Listado de Clientes</h1>';
-    echo '<table class="listado">';
-    echo '<thead>';
-    echo '<tr>';
-    echo '<th>Documento</th>';
-    echo '<th>Nombre</th>';
-    echo '<th>Estado</th>';
-    echo '<th colspan="2">Opciones</th>';
-    echo '</tr>';
-    echo '</thead>';
-    echo '<tbody>';
-
-    foreach ($clientes as $cliente) {
-        echo '<tr data-id="' . $cliente['cliente_id'] . '">';
-        echo '<td>' . htmlspecialchars($cliente['numero_documento']) . '</td>';
-        echo '<td>' . htmlspecialchars($cliente['nombre_completo']) . '</td>';
-        echo '<td>' . htmlspecialchars($cliente['estado']) . '</td>';
-        echo '<td class="icono"><a href="#" onclick="editStatus(' . $cliente['cliente_id'] . ', \'' . htmlspecialchars($cliente['estado']) . '\')"><span class="fa fa-pencil-square-o fa-2x"></span></a></td>';
-        echo '<td class="icono"><a href="#"><span class="fa fa-trash fa-2x"></span></a></td>';
-        echo '</tr>';
-    }
-
-    echo '</tbody>';
-    echo '</table>';
-    exit;
+// Verificar si se está solicitando a través de AJAX
+if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
+    // Solo genera el HTML de la tabla
+    ?>
+    <table class="listado" id="client-table">
+        <thead>
+            <tr>
+                <th>Documento</th>
+                <th>Nombre</th>
+                <th>Estado</th>
+                <th colspan="2">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($clientes as $cliente): ?>
+                <tr data-id="<?php echo $cliente['cliente_id']; ?>">
+                    <td><?php echo htmlspecialchars($cliente['numero_documento']); ?></td>
+                    <td><?php echo htmlspecialchars($cliente['nombre_completo']); ?></td>
+                    <td><?php echo htmlspecialchars($cliente['estado']); ?></td>
+                    <td class="icono">
+                        <a href="#" onclick="editStatus(<?php echo $cliente['cliente_id']; ?>, '<?php echo htmlspecialchars($cliente['estado']); ?>')">
+                            <span class="fa fa-pencil-square-o fa-2x"></span>
+                        </a>
+                    </td>
+                    <td class="icono">
+                        <a href="#" onclick="deleteClient(<?php echo $cliente['cliente_id']; ?>)">
+                            <span class="fa fa-trash fa-2x"></span>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?php
+    exit; // Detener ejecución para no mostrar el resto del HTML
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -67,31 +77,51 @@ if (isset($_GET['ajax'])) {
 <div class="container">
     <div class="header">
         <h1>Listado de Clientes</h1>
-        <button id="add-client-btn">Agregar Nuevo Cliente</button>
+        <div class="header-content">
+        <button id="homeBtn" onclick="window.location.href='dashboard.php'" class="client-button">HOME</button>
+         <button id="addClientBtn" class="client-button">Agregar Nuevo Cliente</button>
+        </div>
     </div>
-    <div id="client-table">
-        <!-- Aquí se cargarán los clientes -->
+    <div id="clients-list" style="margin-top: 20px;">
+        <!-- Aquí se cargará la tabla de clientes mediante AJAX -->
+        <table class="listado" id="client-table">
+            <thead>
+                <tr>
+                    <th>Documento</th>
+                    <th>Nombre</th>
+                    <th>Estado</th>
+                    <th colspan="2">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Este tbody se llenará mediante la función fetchClients() -->
+            </tbody>
+        </table>
     </div>
 </div>
 
-<!-- Modal para agregar nuevo cliente -->
+<!-- Modal para agregar cliente -->
 <div id="add-client-modal" style="display:none;">
     <div class="modal-content">
-        <span id="close-modal">&times;</span>
-        <h2>Agregar Nuevo Cliente</h2>
+        <span id="close-modal" class="close">&times;</span>
         <form id="new-client-form">
-            <input type="text" id="nombre_completo" placeholder="Nombre Completo" required>
-            <input type="text" id="numero_documento" placeholder="Número de Documento" required>
-            <select id="tipo_documento" required>
-                <option value="DNI">DNI</option>
-                <option value="RUC">RUC</option>
-                <!-- Agregar más tipos de documento si es necesario -->
+            <label for="tipo_documento">Tipo de Documento:</label>
+            <select id="tipo_documento">
+                <option value="CC">CC</option>
+                <option value="TI">TI</option>
             </select>
+            <br>
+            <label for="nombre_completo">Nombre Completo:</label>
+            <input type="text" id="nombre_completo" required>
+            <br>
+            <label for="numero_documento">Número de Documento:</label>
+            <input type="text" id="numero_documento" required>
+            <br>
             <button type="submit">Agregar Cliente</button>
         </form>
     </div>
 </div>
 
-<script src="js/list_clients.js" defer></script>
+<script src="js/list_clients.js"></script>
 </body>
 </html>
