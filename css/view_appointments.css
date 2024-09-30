@@ -1,0 +1,73 @@
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(90deg, #ffffff, #0072ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    position: relative;
+    width: 80%; /* Ajusta el ancho según sea necesario */
+    max-width: 600px; /* Establece un ancho máximo */
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.7);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    text-align: center; /* Centrar texto dentro de la caja */
+}
+
+.container h1, .container h2 {
+    margin: 0 0 20px;
+    padding: 0;
+    color: #fff;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    color: #fff; /* Color del texto en la tabla */
+}
+
+table th {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #03e9f4; /* Color del texto de los encabezados */
+}
+
+table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.05); /* Alternar filas */
+}
+
+table tr:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Efecto hover */
+}
+
+
+.alert {
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.alert-danger {
+    background-color: #f44336;
+}
+
+.alert-success {
+    background-color: #4caf50;
+}

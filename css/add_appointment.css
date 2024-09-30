@@ -6,15 +6,13 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* Asegura que el body ocupe toda la altura de la ventana */
-    justify-content: center; /* Centrar verticalmente */
 }
 
 .container {
-    display: flex;
-    justify-content: center; /* Centrar horizontalmente */
+    display: flex; /* Usar flex para alinear en fila */
+    justify-content: space-between; /* Espaciado entre las secciones */
     align-items: flex-start;
-    flex-direction: column; /* Apilar verticalmente */
-    flex-grow: 1; /* Permite que el contenedor crezca y ocupe el espacio disponible */
+    flex-grow: 1; /* Permite que el contenedor crezca */
     gap: 20px; /* Espacio entre secciones */
 }
 
@@ -26,9 +24,7 @@ h1 {
 }
 
 .form-section {
-    width: 100%; /* Ancho completo en dispositivos pequeños */
-    max-width: 500px; /* Máximo ancho para pantallas grandes */
-    margin: auto; /* Centrar el contenedor */
+    width: 60%; /* Ajusta el ancho de la sección de formulario */
     background-color: #ffffff;
     padding: 30px; /* Mayor padding para más espacio interno */
     border-radius: 10px; /* Bordes más redondeados */
@@ -40,19 +36,9 @@ h1 {
     transform: translateY(-5px); /* Elevar ligeramente al hacer hover */
 }
 
-label {
+.label, input, select {
     display: block;
-    margin-bottom: 6px; /* Espacio entre la etiqueta y el input */
-    font-weight: bold;
-    color: #495057; /* Color más suave para las etiquetas */
-}
-
-input[type="number"],
-input[type="date"],
-input[type="time"],
-input[type="text"],
-select {
-    width: 100%;
+    width: 100%; /* Ajustar a 100% */
     padding: 12px; /* Ajustar padding */
     margin-bottom: 15px;
     border: 1px solid #ced4da; /* Color de borde más suave */
@@ -61,10 +47,15 @@ select {
     transition: border-color 0.3s; /* Transición suave */
 }
 
-input:focus,
-select:focus {
+input:focus, select:focus {
     border-color: #007bff; /* Color de borde al enfocar */
     outline: none; /* Quitar el outline por defecto */
+}
+
+.button-container {
+    display: flex; /* Usar flex para alinear en fila */
+    justify-content: space-between; /* Espaciado entre los botones */
+    margin-top: 20px; /* Espacio encima del contenedor de botones */
 }
 
 button {
@@ -76,7 +67,7 @@ button {
     cursor: pointer;
     font-size: 16px; /* Aumentar tamaño de fuente */
     transition: background-color 0.3s, transform 0.2s; /* Transición suave */
-    width: 100%; /* Botón ocupa todo el ancho */
+    width: 48%; /* Cada botón ocupa casi la mitad del contenedor */
 }
 
 button:hover {
@@ -85,13 +76,11 @@ button:hover {
 }
 
 .ticket-section {
-    width: 100%; /* Ancho completo en dispositivos pequeños */
-    max-width: 300px; /* Máximo ancho para pantallas grandes */
+    width: 30%; /* Ajusta el ancho de la sección del ticket */
     padding: 15px;
     border: 1px solid #dee2e6; /* Borde más suave */
     border-radius: 5px;
     background-color: #f8f9fa; /* Fondo suave para el ticket */
-    margin-top: 20px; /* Espacio encima del ticket */
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); /* Sombra para el ticket */
     transition: transform 0.3s; /* Transición al hacer hover */
 }
@@ -130,23 +119,7 @@ footer {
         flex-direction: column; /* Apilar en pantallas más pequeñas */
     }
 
-    .ticket-section {
-        width: 100%; /* El ticket ocupa el ancho completo */
-        margin-top: 15px; /* Menos espacio superior en pantallas pequeñas */
+    .form-section, .ticket-section {
+        width: 100%; /* Ambas secciones ocupan el ancho completo */
     }
-}
-
-.turnero-section {
-    width: 100%; /* Ancho completo en dispositivos pequeños */
-    max-width: 300px; /* Máximo ancho para pantallas grandes */
-    padding: 15px;
-    border: 1px solid #dee2e6; /* Borde más suave */
-    border-radius: 5px;
-    background-color: #f8f9fa; /* Fondo suave para el turnero */
-    margin-top: 20px; /* Espacio encima del turnero */
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); /* Sombra para el turnero */
-}
-
-.turno-info {
-    color: #343a40; /* Color más oscuro para el texto */
 }

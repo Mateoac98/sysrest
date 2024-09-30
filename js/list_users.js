@@ -7,7 +7,7 @@ function fetchUsers() {
                 userTable.innerHTML = data;  
                 setupModalListener();
                 setupFormListener(); 
-                setupEditListeners(); 
+                setupEditListeners();
             } else {
                 console.error("Error: No se encontró el elemento con id 'user-table'.");
             }
@@ -49,7 +49,7 @@ function setupFormListener() {
             const nombreUsuario = document.getElementById('nombre_usuario').value;
             const moduloId = document.getElementById('modulo_id').value;
             const tipoServicio = document.getElementById('tipo_servicio_id').value;
-            const password = document.getElementById('password').value; // Captura de la contraseña
+            const password = document.getElementById('password').value; // Asegúrate de obtener la contraseña
 
             fetch('add_user.php', {
                 method: 'POST',
@@ -60,30 +60,46 @@ function setupFormListener() {
                     nombre_usuario: nombreUsuario,
                     modulo_id: moduloId,
                     tipo_servicio: tipoServicio,
-                    password: password // Envío de la contraseña
+                    password: password // Asegúrate de enviar la contraseña
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     alert('Usuario agregado con éxito');
                     fetchUsers(); 
-                    modal.style.display = 'none'; // Cerrar modal solo aquí
                 } else {
                     alert('Error al agregar usuario: ' + data.error);
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => console.error('Error:', error))
+            .finally(() => {
+                modal.style.display = 'none'; // Cierra el modal al final
+            });
         });
     }
 }
-
 
 function setupEditListeners() {
     const editButtons = document.querySelectorAll('.fa-pencil-square-o');
     editButtons.forEach(button => {
         button.addEventListener('click', function() {
-            const usuarioId = this.closest('tr').dataset.id; 
+            const usuarioId = this.closest('tr').dataset.id;
+            editUser(usuarioId);
+        });
+    });
+}
+
+function setupEditListeners() {
+    const editButtons = document.querySelectorAll('.fa-pencil-square-o');
+    editButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const usuarioId = this.closest('tr').dataset.id;
             editUser(usuarioId);
         });
     });
@@ -101,8 +117,8 @@ function editUser(usuarioId) {
     cells[1].innerHTML = moduloId; // No editable
     cells[2].innerHTML = `
         <select class="editable">
-            <option value="1" ${tipoServicio === 'Caja' ? 'selected' : ''}>Caja</option>
-            <option value="2" ${tipoServicio === 'Asesoría' ? 'selected' : ''}>Asesoría</option>
+            <option value="1" ${tipoServicio === '1' ? 'selected' : ''}>Caja</option>
+            <option value="2" ${tipoServicio === '2' ? 'selected' : ''}>Asesoría</option>
         </select>
     `;
 
@@ -118,7 +134,6 @@ function editUser(usuarioId) {
 
 function saveUser(usuarioId, row) {
     const inputs = row.querySelectorAll('.editable');
-    
     const tipoServicio = inputs[0].value;
 
     fetch('update_user.php', {
@@ -131,7 +146,12 @@ function saveUser(usuarioId, row) {
             tipo_servicio: tipoServicio
         })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
             alert('Usuario actualizado con éxito');
@@ -144,6 +164,7 @@ function saveUser(usuarioId, row) {
 }
 
 function deleteUser(usuarioId) {
+    console.log('ID del usuario a eliminar:', usuarioId); // Agrega esta línea
     if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
         fetch(`delete_user.php?id=${usuarioId}`, {
             method: 'DELETE'
@@ -158,8 +179,10 @@ function deleteUser(usuarioId) {
             }
         })
         .catch(error => console.error('Error:', error));
-}}
+    }
+}
 
+// Inicialización
 document.addEventListener("DOMContentLoaded", function() {
     fetchUsers(); 
 });

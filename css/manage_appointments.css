@@ -1,0 +1,75 @@
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(90deg, #ffffff, #0072ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    position: relative;
+    width: 400px;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.7);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    text-align: center; /* Centrar texto dentro de la caja */
+}
+
+.container h1, .container h2 {
+    margin: 0 0 20px;
+    padding: 0;
+    color: #fff;
+}
+
+.container button {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    color: #03e9f4;
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: 0.5s;
+    margin-top: 20px;
+    letter-spacing: 2px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.container button:hover {
+    color: #fff;
+    border: 1px solid #03e9f4;
+}
+
+.cliente-info {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    color: #fff; /* Color del texto en la información del cliente */
+}
+
+.alert {
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.alert-danger {
+    background-color: #f44336;
+}
+
+.alert-success {
+    background-color: #4caf50;
+}

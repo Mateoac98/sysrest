@@ -27,15 +27,14 @@ if (!isset($_SESSION['username'])) {
                 <h4>ADMINISTRACIÓN</h4>
                 <li><a href="list_clients.php">Clientes</a></li>
                 <li><a href="list_users.php">Usuarios</a></li>
-                <li><a href="#">Servicios</a></li>
-                <li><a href="#">Módulos</a></li>
+                <li><a href="list_service_types.php">Servicios</a></li>
+                <li><a href="list_modulos.php">Módulos</a></li>
                 <h4>GESTIÓN TURNOS</h4>
-                <li><a href="#">Generar Turnos</a></li>
-                <li><a href="#">Atender Turnos</a></li>
+                <li><a href="add_appointment.php">Generar Turnos</a></li>
+                <li><a href="manage_appointments.php">Atender Turnos</a></li>
+                <li><a href="#" id="reiniciarTurnos">Reiniciar Turnos</a></li>
                 <h4>REPORTES</h4>
-                <li><a href="#">Reportes</a></li>
-                <h4>AJUSTES</h4>
-                <li><a href="#">Configuración</a></li>
+                <li><a href="reports.php">Reportes</a></li>
                 <li><a href="#">Cerrar sesión</a></li>
             </ul>
         </nav>
@@ -56,6 +55,12 @@ if (!isset($_SESSION['username'])) {
             </div>
         </div>
 
+        <div id="turnos-container">
+            <a href="#" id="reiniciarTurnos">Reiniciar Turnos</a>
+            <div id="mensaje"></div> <!-- Contenedor para mostrar mensajes -->
+            <!-- Aquí se cargará el formulario de asignación de turnos -->
+        </div>
+
         <footer class="page-footer">
             <div class="footer-content">
                 <span>&copy; 2024 Tu Empresa</span>
@@ -63,5 +68,7 @@ if (!isset($_SESSION['username'])) {
             </div>
         </footer>
     </div>
+
+    <script src="js/dashboard.js"></script> <!-- Incluye el script JavaScript -->
 </body>
 </html>

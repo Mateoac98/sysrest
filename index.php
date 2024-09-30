@@ -36,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Verifica la contraseña
             if (password_verify($password, $user['contraseña'])) {
                 $_SESSION['username'] = $username; // Guarda el nombre de usuario en la sesión
+                $_SESSION['modulo_id'] = $user['modulo_id']; // Guarda el ID del módulo en la sesión
                 header("Location: dashboard.php"); // Redirige a la página de dashboard
                 exit();
             } else {

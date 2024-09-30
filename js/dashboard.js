@@ -1,31 +1,97 @@
-document.getElementById('search-form').addEventListener('submit', function(e) {
-    e.preventDefault(); // Evita el envío del formulario
+document.addEventListener("DOMContentLoaded", function() {
+    const reiniciarTurnosButton = document.getElementById('reiniciarTurnos');
+    const mensajeDiv = document.getElementById('mensaje');
+    const ctx = document.getElementById('turnosChart').getContext('2d'); // Contexto del gráfico
+    let turnosChart; // Variable para el gráfico
 
-    // Realiza la solicitud AJAX
-    fetch('clientes.php?ajax=true')
-        .then(response => {
-            // Verifica si la respuesta es correcta
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+    // Verificar que el elemento de mensaje existe
+    if (!mensajeDiv) {
+        console.error("El contenedor de mensaje no fue encontrado.");
+        return; // Salir si no se encuentra el contenedor
+    }
+
+    // Función para cargar las estadísticas
+    function loadStatistics() {
+        fetch('turno_statistics.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success === false) {
+                    console.error(data.error);
+                } else {
+                    document.getElementById('pendientesCount').innerText = data.pendientes;
+                    document.getElementById('atendidosCount').innerText = data.atendidos;
+                    document.getElementById('finalizadosCount').innerText = data.finalizados;
+
+                    // Actualizar gráfico
+                    updateChart(data.pendientes, data.atendidos, data.finalizados);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Función para actualizar el gráfico
+    function updateChart(pendientes, atendidos, finalizados) {
+        if (turnosChart) {
+            turnosChart.destroy(); // Destruir gráfico anterior
+        }
+
+        turnosChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Pendientes', 'Atendidos', 'Finalizados'],
+                datasets: [{
+                    label: 'Cantidad de Turnos',
+                    data: [pendientes, atendidos, finalizados],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(75, 192, 192, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
-            return response.json(); // Devuelve el cuerpo de la respuesta como JSON
-        })
-        .then(data => {
-            const clientList = document.getElementById('client-list');
-            clientList.innerHTML = ''; // Limpia la lista anterior
+        });
+    }
 
-            // Recorre los datos y crea elementos para cada cliente
-            data.forEach(cliente => {
-                const clientItem = document.createElement('div');
-                clientItem.className = 'client-item';
-                clientItem.innerHTML = `
-                    <div class="client-info"><strong>Nombre Completo:</strong> ${cliente.nombre_completo}</div>
-                    <div class="client-info"><strong>ID Cliente:</strong> ${cliente.cliente_id}</div>
-                    <div class="client-info"><strong>Tipo de Documento:</strong> ${cliente.tipo_documento}</div>
-                    <div class="client-info"><strong>Número de Documento:</strong> ${cliente.numero_documento}</div>
-                `;
-                clientList.appendChild(clientItem);
-            });
-        })
-        .catch(error => console.error('Error:', error));
+    // Cargar estadísticas al iniciar
+    loadStatistics();
+
+    if (reiniciarTurnosButton) {
+        reiniciarTurnosButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Evitar la acción predeterminada del enlace
+            if (confirm("¿Está seguro de que desea reiniciar todos los turnos?")) {
+                fetch('reset_appointments.php', {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        mensajeDiv.textContent = "Los turnos se han reiniciado correctamente.";
+                        // Volver a cargar estadísticas después de reiniciar
+                        loadStatistics();
+                    } else {
+                        mensajeDiv.textContent = "Error al reiniciar los turnos: " + data.error;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en la petición:', error);
+                    mensajeDiv.textContent = "Error en la petición: " + error;
+                });
+            }
+        });
+    } else {
+        console.error("El botón de reiniciar turnos no fue encontrado.");
+    }
 });

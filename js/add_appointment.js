@@ -47,13 +47,12 @@ var numeroDeTurnoActual = 0;
 
 // Función para solicitar el turno
 function solicitarTurno(tipoTurno) {
-    const nombre = document.getElementById("nombre").value;
-    const documento = document.getElementById("documento").value;
-    const numeroDocumento = document.getElementById("numeroDocumento").value;
-    const tipoServicio = document.getElementById("tipoServicio").value;
+    const tipoDocumento = document.getElementById("tipo_documento").value;
+    const numeroDocumento = document.getElementById("numero_documento").value;
+    const tipoServicio = document.getElementById("tipo_servicio").value;
 
     // Validación de campos
-    if (!nombre || documento === "na" || !numeroDocumento || tipoServicio === "na") {
+    if (!tipoDocumento || !numeroDocumento || tipoServicio === "na") {
         showWarning("Por favor, llene todos los campos requeridos antes de continuar.");
         return;
     } else {
@@ -65,11 +64,10 @@ function solicitarTurno(tipoTurno) {
     if (numeroDeTurnoActual <= 100) {
         // Registrar el turno usando AJAX
         const turnoData = {
-            nombre: nombre,
-            documento: documento,
-            numeroDocumento: numeroDocumento,
-            tipoServicio: tipoServicio,
-            tipoTurno: tipoTurno,
+            tipo_documento: tipoDocumento,
+            numero_documento: numeroDocumento,
+            tipo_servicio_ID: tipoServicio,
+            tipo_turno: tipoTurno,
             fecha: document.getElementById("fecha").value, // Fecha actual en formato YYYY-MM-DD
             hora: document.getElementById("hora").value    // Hora actual
         };
@@ -103,12 +101,43 @@ function solicitarTurno(tipoTurno) {
     }
 }
 
+document.getElementById('cancelarTurno').addEventListener('click', function() {
+    const turnoId = prompt("Por favor, ingresa el ID del turno que deseas cancelar:");
+
+    if (turnoId) {
+        // Llamar a la función para cancelar el turno
+        cancelarTurno(turnoId);
+    }
+});
+
+// Función para cancelar el turno
+function cancelarTurno(turnoId) {
+    fetch('cancel_appointment.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ turno_id: turnoId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Turno cancelado con éxito.');
+        } else {
+            alert('Error al cancelar el turno: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la petición AJAX:', error);
+        alert('Error en la petición AJAX.');
+    });
+}
+
 // Función para restablecer los campos del formulario
 function resetFields() {
-    document.getElementById("nombre").value = "";
-    document.getElementById("documento").value = "na";
-    document.getElementById("numeroDocumento").value = "";
-    document.getElementById("tipoServicio").value = "na";
+    document.getElementById("tipo_documento").value = "";
+    document.getElementById("numero_documento").value = "";
+    document.getElementById("tipo_servicio").value = "na";
 }
 
 // Función para mostrar un mensaje de advertencia

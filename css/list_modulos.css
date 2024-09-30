@@ -1,0 +1,97 @@
+@charset "UTF-8";
+@import 'https://fonts.googleapis.com/css?family=Raleway';
+
+body {
+    background-color: #f0f8ff; /* Fondo suave para toda la página */
+    font-family: 'Raleway', sans-serif; /* Fuente de la página */
+    margin: 0;
+    padding: 20px;
+}
+
+.header h1 {
+    margin-bottom: 20px; /* Espacio debajo del header */
+}
+
+.header-content {
+    display: flex; /* Alinear horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    margin-bottom: 50px; /* Espacio debajo del header */
+}
+
+h1 {
+    margin: 0; /* Elimina el margen para alinear correctamente */
+    padding-right: 20px; /* Espacio entre el título y el botón */
+}
+
+.client-button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 10px; /* Espacio entre botones */
+}
+
+.client-button:hover {
+    background-color: #0056b3;
+}
+
+/* LISTADO STYLES */
+.listado {
+    text-align: left;
+    overflow: hidden;
+    width: 80%;
+    margin: 20px auto;
+    display: table;
+    padding: 0;
+    border-collapse: collapse; /* Mejora el diseño de la tabla */
+}
+
+.listado th, .listado td {
+    padding: 10px;
+    font-size: 0.9em;
+}
+
+.listado th {
+    background-color: #0056b3;
+    color: #FFFFFF;
+}
+
+.listado tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+.listado tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.listado tr:hover {
+    background-color: #d1e7dd;
+}
+
+.listado td.icono:hover {
+    background-color: #dc3545;
+}
+
+#add-module-modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.4); 
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* Ajusta este valor para mover el modal verticalmente */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Puedes cambiar este valor según tus necesidades */
+    border-radius: 8px; /* Esquinas redondeadas para el modal */
+}

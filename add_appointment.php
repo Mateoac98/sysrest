@@ -8,9 +8,19 @@ include 'includes/header.php';
     <div class="form-section">
         <h1>Asignación de turnos</h1>
         <form action="process_appointment.php" method="POST" onsubmit="updateDateTime();">
-            <!-- Campo para el ID del Cliente -->
-            <label for="cliente_id">Cliente ID:</label>
-            <input type="number" id="cliente_id" name="cliente_id" required>
+            <!-- Campo para el Tipo de Documento -->
+            <label for="tipo_documento">Tipo de Documento:</label>
+            <select name="tipo_documento" id="tipo_documento" required>
+                <option value="">Seleccione</option>
+                <option value="CC">CC</option>
+                <option value="TI">TI</option>
+                <option value="PPT">PPT</option>
+                <!-- Agrega otros tipos de documento según sea necesario -->
+            </select>
+            
+            <!-- Campo para el Número de Documento -->
+            <label for="numero_documento">Número de Documento:</label>
+            <input type="text" id="numero_documento" name="numero_documento" required>
 
             <!-- Campo para el Tipo de Servicio -->
             <label for="tipo_servicio_ID">Tipo de Servicio:</label>
@@ -38,8 +48,11 @@ include 'includes/header.php';
                 <p>Hora: <span id="currentTime">00:00:00</span></p> 
             </div>
 
-            <!-- Botón para agregar la cita -->
-            <button type="submit">Solicitar Turno</button>
+            <div class="button-container">
+                <button id="agendarTurno">Agendar Turno</button>
+                <button id="cancelarTurno">Cancelar Turno</button>
+            </div>
+
         </form>
     </div>
     
@@ -56,18 +69,6 @@ include 'includes/header.php';
         <?php else: ?>
             <p>No hay información de ticket disponible.</p>
         <?php endif; ?>
-    </div>
-
-    <!-- Sección del Turnero -->
-    <div class="turnero-section">
-        <h2>Turnero</h2>
-        <div class="turno-info">
-            <p><strong>Turno ID:</strong> <span id="turnoId">-</span></p>
-            <p><strong>Módulo de Atención:</strong> <span id="moduloAtencion">-</span></p>
-        </div>
-        <div class="cancel-section">
-            <button id="cancelTurno" style="display: none;">Cancelar Turno</button>
-        </div>
     </div>
 
 </div>

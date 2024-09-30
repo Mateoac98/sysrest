@@ -604,4 +604,7 @@ body {
 .footer-content a:hover {
   text-decoration: underline; /* Subrayar al pasar el mouse */
 }
+#turnos-container {
+  display: none; /* Esto oculta el contenedor completo */
+}
 
