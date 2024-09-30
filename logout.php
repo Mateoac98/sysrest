@@ -1,6 +1,6 @@
 <?php
 session_start();
-session_destroy();
-header("Location: index.php");
+session_destroy(); // Destruye la sesión
+header("Location: index.php"); // Redirige al inicio de sesión
 exit();
 ?>

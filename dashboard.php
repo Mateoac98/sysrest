@@ -1,9 +1,13 @@
-<?php
+<?php 
 session_start();
 if (!isset($_SESSION['username'])) {
     header("Location: index.php");
     exit();
 }
+
+// Asegúrate de que el nombre del usuario está almacenado en la sesión
+$username = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Usuario'; // Valor por defecto
+
 ?>
 
 <!DOCTYPE html>
@@ -13,14 +17,11 @@ if (!isset($_SESSION['username'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SYSREST</title>
     <link rel="stylesheet" href="css/dashboard.css">
-    <script src="https://use.fontawesome.com/bf66789927.js"></script>
 </head>
 <body>
     <div class="page-header">
         <div class="logo">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 9l9-6 9 6v9a2 2 0 0 1-2 2h-4v-6h-8v6H5a2 2 0 0 1-2-2V9z" fill="currentColor"/>
-            </svg>
+            <img src="images/sysrest.png" alt="Logo" class="logo-img">
         </div>
         <nav>
             <ul class="admin-menu">
@@ -33,40 +34,42 @@ if (!isset($_SESSION['username'])) {
                 <li><a href="add_appointment.php">Generar Turnos</a></li>
                 <li><a href="manage_appointments.php">Atender Turnos</a></li>
                 <li><a href="#" id="reiniciarTurnos">Reiniciar Turnos</a></li>
-                <h4>REPORTES</h4>
-                <li><a href="reports.php">Reportes</a></li>
-                <li><a href="#">Cerrar sesión</a></li>
+                <li><a href="logout.php">Cerrar sesión</a></li>
             </ul>
         </nav>
     </div>
 
     <div class="page-content">
-        <h1>SYSREST</h1>
+        <h1>BIENVENIDO</h1> <!-- Saludo al usuario -->
         <div class="search-and-user">
             <form>
                 <input type="search" placeholder="Buscar...">
                 <button type="submit">Buscar</button>
             </form>
             <div class="admin-profile">
-                <span class="greeting">Hola, Admin</span>
-                <svg width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="15" cy="15" r="15" fill="currentColor"/>
-                </svg>
+                <span class="greeting">Hola, <?php echo $username; ?></span> <!-- Saludo adicional -->
+                <div class="profile-icon"></div>
             </div>
         </div>
 
-        <div id="turnos-container">
-            <a href="#" id="reiniciarTurnos">Reiniciar Turnos</a>
-            <div id="mensaje"></div> <!-- Contenedor para mostrar mensajes -->
-            <!-- Aquí se cargará el formulario de asignación de turnos -->
+        <div class="statistics">
+            <h3>Estadísticas de Turnos</h3>
+            <p>Total Agendados: <span id="totalAgendados"></span></p>
+            <p>Total Atendidos: <span id="totalAtendidos"></span></p>
+            <p>Total Finalizados: <span id="totalFinalizados"></span></p>
+            <h3>Tipos de Turnos</h3>
+            <ul id="tiposTurnos"></ul>
+            <h3>Servicios Utilizados</h3>
+            <ul id="serviciosUtilizados"></ul>
         </div>
+    </div>
 
-        <footer class="page-footer">
-            <div class="footer-content">
-                <span>&copy; 2024 Tu Empresa</span>
-                <a href="#">Política de privacidad</a>
-            </div>
-        </footer>
+    <footer class="page-footer">
+        <div class="footer-content">
+            <span>&copy; 2024 SYSREST</span>
+            <a href="#">Política de privacidad</a>
+        </div>
+    </footer>
     </div>
 
     <script src="js/dashboard.js"></script> <!-- Incluye el script JavaScript -->

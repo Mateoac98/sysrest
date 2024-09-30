@@ -41,7 +41,7 @@ $result = $stmt->get_result();
 <body>
 
 <div class="container">
-    <h1>SYSREST></h1>
+    <h1>SYSREST</h1>
     <h2>Lista de Turnos</h2>
 
     <table id="appointmentsTable">

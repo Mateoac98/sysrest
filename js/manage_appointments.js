@@ -28,9 +28,10 @@ document.getElementById('attendBtn').addEventListener('click', function() {
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.message);
+        showMessage(data.message, 'success'); // Mostrar el mensaje aquí
         if (data.success) {
-            document.getElementById('estadoCliente').innerText = 'Estado: Atendido'; // Actualiza el estado en la interfaz
+            document.getElementById('estadoCliente').innerText = 'Estado: Atendiendo'; // Actualiza el estado en la interfaz
+            showMessage('Turno atendido con éxito', 'success')
         }
     })
     .catch(error => {
@@ -49,9 +50,10 @@ document.getElementById('finalizeBtn').addEventListener('click', function() {
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.message);
+        showMessage(data.message, 'success'); // Mostrar el mensaje aquí
         if (data.success) {
             document.getElementById('estadoCliente').innerText = 'Estado: Finalizado'; // Actualiza el estado en la interfaz
+            showMessage('Turno finalizado con éxito', 'success')
         }
     })
     .catch(error => {
